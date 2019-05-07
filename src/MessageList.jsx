@@ -1,59 +1,17 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Message from './Message.jsx';
 
-const messages = [
-  {
-    type: "incomingMessage",
-    content: "I won't be impressed with technology until I can download food.",
-    username: "Anonymous1"
-  },
-  {
-    type: "incomingNotification",
-    content: "Anonymous1 changed their name to nomnom",
-  },
-  {
-    type: "incomingMessage",
-    content: "I wouldn't want to download Kraft Dinner. I'd be scared of cheese packet loss.",
-    username: "Anonymous2"
-  },
-  {
-    type: "incomingMessage",
-    content: "...",
-    username: "nomnom"
-  },
-  {
-    type: "incomingMessage",
-    content: "I'd love to download a fried egg, but I'm afraid encryption would scramble it",
-    username: "Anonymous2"
-  },
-  {
-    type: "incomingMessage",
-    content: "This isn't funny. You're not funny",
-    username: "nomnom"
-  },
-  {
-    type: "incomingNotification",
-    content: "Anonymous2 changed their name to NotFunny",
-  },
-];
 
-class MessageList extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      messages
-    }
-  }
-  render() {
-    const messageItems = this.state.messages.map(message => (
-      <Message message={message}/>
-    ));
-    return (
-      <main className="messages">
-        {messageItems}
-      </main>
-    )
-  }
+
+const MessageList = ({messages}) => {
+  const messageItems = messages.map(message => (
+    <Message key={message.id} message={message}/>
+  ));
+  return (
+    <main className="messages">
+      {messageItems}
+    </main>
+  )
 }
 
 export default MessageList;

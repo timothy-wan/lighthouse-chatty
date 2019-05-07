@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 const ChatBar = () => {
   return (
-    <footer className="chatbar">
-      <input className="chatbar-username" placeholder="Your Name (Optional)" />
-      <input className="chatbar-message" placeholder="Type a message and hit ENTER" />
+    <footer className='chatbar'>
+      <input className='chatbar-username' placeholder='Your Name (Optional)' />
+      <input className='chatbar-message' placeholder='Type a message and hit ENTER' />
     </footer>
   )
 }
