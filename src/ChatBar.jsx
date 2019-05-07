@@ -19,8 +19,12 @@ const ChatBar = (props) => {
     if(event.key === 'Enter') {
       let newMessage = {
         id: generateRandomId(),
-        type: 'incomingMessage'
+        type: 'incomingMessage',
+        content: event.target.value,
+        username: user.name
       }
+      addNewMessage(newMessage);
+      event.target.value = '';
     }
   }
   return (
