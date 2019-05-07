@@ -1,6 +1,7 @@
 import React from 'react';
 
-const Message = ({message}) => {
+const Message = (props) => {
+  const {message} = props;
   return message.type === 'incomingMessage' ? (
     <div className='message'>
       <span className='message-username'>{message.username}</span>
