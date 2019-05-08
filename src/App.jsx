@@ -8,22 +8,19 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      colour: '',
       currentUser: 'Anonymous',
       messages: [],
       userCount: ''
     }
     this.changeUserName = this.changeUserName.bind(this);
-    this.changeUserCount = this.changeUserCount.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
-    this.socket = new WebSocket('ws://192.168.88.45:3001', 'procotol');
+    this.socket = new WebSocket('ws://localhost:3001', 'procotol');
   }
   changeUserName(name) {
     this.setState({
       currentUser: name
     })
-  }
-  changeUserCount(content) {
-    this.setState({ userCount: content })
   }
   addNewMessage(message) {
     const oldMessages = this.state.messages;
@@ -45,9 +42,11 @@ class App extends Component {
       const data = JSON.parse(event.data);
       console.log(data);
       if(data.type === 'usersConnected') {
-        this.changeUserCount(data.content);
-      } else {
-        this.addNewMessage(JSON.parse(event.data));
+        this.setState({ userCount: data.content })
+      } else if(data.type === 'userColour') {
+        this.setState({colour: data.colour});
+      }else {
+        this.addNewMessage(data);
       }
 
     }
