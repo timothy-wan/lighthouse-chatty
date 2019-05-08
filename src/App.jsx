@@ -9,9 +9,11 @@ class App extends Component {
     super(props);
     this.state = {
       currentUser: 'Anonymous',
-      messages: []
+      messages: [],
+      userCount: ''
     }
     this.changeUserName = this.changeUserName.bind(this);
+    this.changeUserCount = this.changeUserCount.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.socket = new WebSocket('ws://192.168.88.45:3001', 'procotol');
   }
@@ -19,6 +21,9 @@ class App extends Component {
     this.setState({
       currentUser: name
     })
+  }
+  changeUserCount(content) {
+    this.setState({ userCount: content })
   }
   addNewMessage(message) {
     const oldMessages = this.state.messages;
@@ -37,15 +42,21 @@ class App extends Component {
       console.log('Connected to server');
     }
     this.socket.onmessage = event => {
-      console.log(event);
-      this.addNewMessage(JSON.parse(event.data));
+      const data = JSON.parse(event.data);
+      console.log(data);
+      if(data.type === 'usersConnected') {
+        this.changeUserCount(data.content);
+      } else {
+        this.addNewMessage(JSON.parse(event.data));
+      }
+
     }
   }
 
   render() {
     return (
       <>
-        <Navbar/>
+        <Navbar userCount={this.state.userCount}/>
         <MessageList messages={this.state.messages}/>
         <ChatBar 
           user={this.state.currentUser} 
