@@ -1,38 +1,52 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { Component } from 'react';
 
-export const generateRandomId = (alphabet => {
-  const alphabetLength = alphabet.length;
-  const randoIter = (key, n) => {
-    if (n === 0) {
-      return key;
-    }
-    const randoIndex = Math.floor(Math.random() * alphabetLength);
-    const randoLetter = alphabet[randoIndex];
-    return randoIter(key + randoLetter, n - 1);
-  };
-  return () => randoIter('', 10);
-})('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
-
-const ChatBar = (props) => {
-  const {user, addNewMessage} = props;
-  const receiveInput = event => {
-    if(event.key === 'Enter') {
-      let newMessage = {
-        id: generateRandomId(),
-        type: 'incomingMessage',
-        content: event.target.value,
-        username: user.name
-      }
-      addNewMessage(newMessage);
-      event.target.value = '';
+class ChatBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: ''
     }
   }
-  return (
-    <footer className='chatbar'>
-      <input className='chatbar-username' placeholder='Your Name (Optional)' defaultValue={user.name} readOnly/>
-      <input className='chatbar-message' placeholder='Type a message and hit ENTER' onKeyPress={receiveInput}/>
-    </footer>
-  )
+  
+  render() {
+    const {user, sendMessage, changeUserName} = this.props;
+    const changeName = event => {
+      if(event.key === 'Enter') {
+        changeUserName(event.target.value);
+      }
+    }
+    const onInput = event => {
+      this.setState({
+        content: event.target.value
+      })
+    }
+    const createMessage = event => {
+      if(event.key === 'Enter') {
+        let newMessage = {
+          content: event.target.value,
+          username: user
+        } 
+        sendMessage(newMessage);
+        this.setState({content: ''});
+      }
+    }
+    return (
+      <footer className='chatbar'>
+        <input className='chatbar-username'
+          placeholder='Your Name (Optional)'
+          defaultValue={user}
+          onKeyPress={changeName}
+          />
+        <input className='chatbar-message'
+          placeholder='Type a message and hit ENTER'
+          onInput={onInput}
+          onKeyPress={createMessage}
+          value={this.state.content}/>
+      </footer>
+    )
+  }
 }
+  
 
 export default ChatBar;
