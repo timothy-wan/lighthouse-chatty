@@ -13,7 +13,12 @@ class ChatBar extends Component {
     const {user, sendMessage, changeUserName} = this.props;
     const changeName = event => {
       if(event.key === 'Enter') {
+        let newMessage = {
+          type: 'postNotification',
+          content: `${user} has changed their name to ${event.target.value}`
+        }
         changeUserName(event.target.value);
+        sendMessage(newMessage);
       }
     }
     const onInput = event => {
@@ -24,6 +29,7 @@ class ChatBar extends Component {
     const createMessage = event => {
       if(event.key === 'Enter') {
         let newMessage = {
+          type: 'postMessage',
           content: event.target.value,
           username: user
         } 

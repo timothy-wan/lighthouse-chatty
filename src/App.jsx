@@ -33,7 +33,9 @@ class App extends Component {
     this.setState({ messages: newMessage});
   }
   sendMessage(message) {
-    this.socket.send(JSON.stringify(message));
+    if(this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(message));
+    }
   }
     // in App.jsx
   componentDidMount() {
