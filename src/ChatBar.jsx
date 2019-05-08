@@ -12,7 +12,7 @@ class ChatBar extends Component {
   render() {
     const {user, sendMessage, changeUserName} = this.props;
     const changeName = event => {
-      if(event.key === 'Enter') {
+      if(event.key === 'Enter' && event.target.value !== user) {
         let newMessage = {
           type: 'postNotification',
           content: `${user} has changed their name to ${event.target.value}`
