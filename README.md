@@ -1,37 +1,27 @@
 Chatty App
 =====================
 
-A SPA build with ReactJS that allows users with communicate with each other without having to register for an account.
+A SPA built with ReactJS that allows users with communicate with each other without having to register for an account.
 
 ### Usage
 
-Clone the boilerplate and create your own git repo.
+Clone the project.
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
-
-Install the dependencies and start the server.
+Install the dependencies and start the React server from chatty directory. Change directory into the websocket server, chatty/chatty-server and install the dependencies and start the websocket server.
 
 ```
 npm install
 npm start
+cd chatty-server
+npm install
+node server.js
 open http://localhost:3000
 ```
 
-### Static Files
-
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
 
 ### Linting
 
-This boilerplate project includes React ESLint configuration.
+This project includes React ESLint configuration.
 
 ```
 npm run lint
@@ -43,3 +33,11 @@ npm run lint
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* css-loader
+* sass-loader
+* SASS
+* ws
+* uuid
+* style-loader
+* SockJS-client
+* eslint

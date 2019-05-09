@@ -10,7 +10,7 @@ class ChatBar extends Component {
   }
   
   render() {
-    const {user, sendMessage, changeUserName, colour} = this.props;
+    const {user, sendMessage, changeUserName, colour, typing} = this.props;
     const changeName = event => {
       if(event.key === 'Enter' && event.target.value !== user) {
         let newMessage = {
@@ -36,6 +36,12 @@ class ChatBar extends Component {
         } 
         sendMessage(newMessage);
         this.setState({content: ''});
+      } else {
+        let newMessage = {
+          type: 'currentlyTyping',
+          content: `${user} is currently typing`
+        }
+        sendMessage(newMessage);
       }
     }
     return (
@@ -50,6 +56,7 @@ class ChatBar extends Component {
           onInput={onInput}
           onKeyPress={createMessage}
           value={this.state.content}/>
+        <div className='typing'>{typing}</div>
       </footer>
     )
   }

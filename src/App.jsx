@@ -11,6 +11,8 @@ class App extends Component {
       colour: '',
       currentUser: 'Anonymous',
       messages: [],
+      typing: '',
+      isTyping: false,
       userCount: ''
     }
     this.changeUserName = this.changeUserName.bind(this);
@@ -25,7 +27,15 @@ class App extends Component {
   addNewMessage(message) {
     const oldMessages = this.state.messages;
     const newMessage = [...oldMessages, message];
-    this.setState({ messages: newMessage});
+    this.setState({ 
+      messages: newMessage
+    });
+  }
+  addNewTyping(message) {
+    this.setState({ 
+      isTyping: true,
+      typing: message.content
+    });
   }
   sendMessage(message) {
     if(this.socket.readyState === WebSocket.OPEN) {
@@ -38,14 +48,36 @@ class App extends Component {
     }
     this.socket.onmessage = event => {
       const data = JSON.parse(event.data);
-      if(data.type === 'usersConnected') {
-        this.setState({ userCount: data.content })
-      } else if(data.type === 'userColour') {
-        this.setState({colour: data.colour});
-      }else {
-        this.addNewMessage(data);
+      switch (data.type) {
+        case 'usersConnected':
+          this.setState({ userCount: data.content });
+          break;
+        case 'userColour':
+          this.setState({colour: data.colour});
+          break;
+        case 'incomingMessage':
+          this.addNewMessage(data);
+          break;
+        case 'incomingNotification':
+          this.addNewMessage(data);
+          break;
+        case 'currentlyTyping':
+          this.addNewTyping(data);
+          if(this.state.isTyping) {
+            let interval = 900;
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              this.setState({
+                isTyping: false,
+                typing: ''
+              });
+            }, interval);
+          }
+          break;
+        default:
+          console.error('Received incorrect data type!');
+          break;
       }
-
     }
   }
 
@@ -62,7 +94,9 @@ class App extends Component {
           user={this.state.currentUser} 
           sendMessage={this.sendMessage}
           changeUserName={this.changeUserName}
-          colour={this.state.colour}/>
+          colour={this.state.colour}
+          isTyping={this.state.isTyping}
+          typing={this.state.typing}/>
       </>   
     )
   }

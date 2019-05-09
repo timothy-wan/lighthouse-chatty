@@ -10,6 +10,7 @@ body {
 }
 
 .chatbar {
+  height: 5.5em;
   background: tomato;
   border-top: 1px solid black;
   bottom: 0;
@@ -97,4 +98,9 @@ body {
 img {
   height: 60%;
   width: 60%;
+}
+
+.typing {
+  position: absolute;
+  bottom: 0;
 }

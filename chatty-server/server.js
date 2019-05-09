@@ -45,7 +45,8 @@ const sendCurrentUsers = () => {
   }
   wss.broadcast(newMessage);
 }
-const sendUserColour = (ws) => {
+// Sends a random css colour code the client should use
+const sendUserColour = ws => {
   let random = getRandomInt(5);
   let newMessage = {
     type: 'userColour',
@@ -53,33 +54,48 @@ const sendUserColour = (ws) => {
   }
   ws.send(JSON.stringify(newMessage));
 }
+// Broadcasts new message to all clients
+const broadcastNewMessage = (message, type) => {
+  let newMessage = {
+    ...message,
+    id: uuidv1(),
+    type
+  }
+  wss.broadcast(newMessage)
+}
+
+// Checks the type of message received and broadcasts the message to all open clients
+const handleNewMessage = message => {
+  switch(message.type) {
+    case 'postMessage':
+      broadcastNewMessage(message, 'incomingMessage');
+      break;
+    case 'postNotification':
+      broadcastNewMessage(message, 'incomingNotification');
+      break;
+    case 'currentlyTyping':
+      broadcastNewMessage(message, 'currentlyTyping');
+      break;
+    default:
+      console.error('Unknown message type received!');
+  }
+}
+
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+// Assigns a colour for client upon connection and updates them on the current client count
 wss.on('connection', ws => {
   sendUserColour(ws);
   sendCurrentUsers();
+  // When a client sends a message, will parse the data and broadcast new message to all clients
   ws.on('message', data => {
     const receivedData = JSON.parse(data);
-    if(receivedData.type === 'postMessage') {
-      let newMessage = {
-        ...receivedData,
-        id: uuidv1(),
-        type: 'incomingMessage'
-      }
-      wss.broadcast(newMessage)
-    }
-    if(receivedData.type === 'postNotification') {
-      let newMessage = {
-        ...receivedData,
-        id: uuidv1(),
-        type: 'incomingNotification'
-      }
-      wss.broadcast(newMessage);
-    }
+    handleNewMessage(receivedData);
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
+  // Updates the open connection count for remaining clients 
   ws.on('close', () => {
     sendCurrentUsers();
   });
