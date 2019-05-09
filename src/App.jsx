@@ -17,7 +17,7 @@ class App extends Component {
     }
     this.changeUserName = this.changeUserName.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
-    this.socket = new WebSocket('ws://localhost:3001', 'procotol');
+    this.socket = new WebSocket('ws://192.168.88.45:3001', 'procotol');
   }
   changeUserName(name) {
     this.setState({

@@ -2,7 +2,7 @@
 import React from 'react';
 const checkIfLink = (content) => {
   const regExp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&’\(\)\*\+,;=.]+(?:png|jpg|jpeg|gif|svg)+$/;
-  const links = content.matchAll(regExp);
+  const links = content.match(regExp);
   if(links) {
     return links[0];
   }

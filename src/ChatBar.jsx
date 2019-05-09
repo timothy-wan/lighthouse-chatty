@@ -36,13 +36,17 @@ class ChatBar extends Component {
         } 
         sendMessage(newMessage);
         this.setState({content: ''});
-      } else {
+      }
+    }
+    const userTyping = event => {
+      if(event) {
         let newMessage = {
           type: 'currentlyTyping',
           content: `${user} is currently typing`
         }
         sendMessage(newMessage);
       }
+
     }
     return (
       <footer className='chatbar'>
@@ -55,6 +59,7 @@ class ChatBar extends Component {
           placeholder='Type a message and hit ENTER'
           onInput={onInput}
           onKeyPress={createMessage}
+          onChange={userTyping}
           value={this.state.content}/>
         <div className='typing'>{typing}</div>
       </footer>
