@@ -10,7 +10,7 @@ class ChatBar extends Component {
   }
   
   render() {
-    const {user, sendMessage, changeUserName} = this.props;
+    const {user, sendMessage, changeUserName, colour} = this.props;
     const changeName = event => {
       if(event.key === 'Enter' && event.target.value !== user) {
         let newMessage = {
@@ -31,7 +31,8 @@ class ChatBar extends Component {
         let newMessage = {
           type: 'postMessage',
           content: event.target.value,
-          username: user
+          username: user,
+          colour
         } 
         sendMessage(newMessage);
         this.setState({content: ''});

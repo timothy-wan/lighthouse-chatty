@@ -34,13 +34,10 @@ class App extends Component {
   }
     // in App.jsx
   componentDidMount() {
-    console.log('componentDidMount <App />');
     this.socket.onopen = () => {
-      console.log('Connected to server');
     }
     this.socket.onmessage = event => {
       const data = JSON.parse(event.data);
-      console.log(data);
       if(data.type === 'usersConnected') {
         this.setState({ userCount: data.content })
       } else if(data.type === 'userColour') {
@@ -52,15 +49,20 @@ class App extends Component {
     }
   }
 
+  componentDidUpdate() {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
   render() {
     return (
       <>
         <Navbar userCount={this.state.userCount}/>
-        <MessageList messages={this.state.messages}/>
+        <MessageList messages={this.state.messages} colour={this.state.colour}/>
         <ChatBar 
           user={this.state.currentUser} 
           sendMessage={this.sendMessage}
-          changeUserName={this.changeUserName}/>
+          changeUserName={this.changeUserName}
+          colour={this.state.colour}/>
       </>   
     )
   }
