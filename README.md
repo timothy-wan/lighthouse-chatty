@@ -3,6 +3,12 @@ Chatty App
 
 A SPA built with ReactJS that allows users with communicate with each other without having to register for an account.
 
+### Screenshots
+
+!['Conversation'](https://github.com/tw5033/lighthouse-chatty/blob/screenshots/screenshots/conversation.png)
+!['Notification'](https://github.com/tw5033/lighthouse-chatty/blob/screenshots/screenshots/notification.png)
+!["Cat"](https://github.com/tw5033/lighthouse-chatty/blob/screenshots/screenshots/img.png)
+
 ### Usage
 
 Clone the project.
