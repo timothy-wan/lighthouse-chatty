@@ -1,5 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+
+// Checks if the message contains an image link
 const checkIfLink = (content) => {
   const regExp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&’\(\)\*\+,;=.]+(?:png|jpg|jpeg|gif|svg)+$/;
   const links = content.match(regExp);
@@ -10,7 +12,7 @@ const checkIfLink = (content) => {
 }
 
 // Message Component, writes the messages received from the websocket server. 
-// It will try to render an img if the message content is an url that ends in png, jpg, jpeg, gif, or svg.
+// It will try to render an image if the message content is an url that ends in png, jpg, jpeg, gif, or svg.
 // Messages and notifications are filtered and rendered.
 const Message = (props) => {
   const {message} = props;

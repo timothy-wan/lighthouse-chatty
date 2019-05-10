@@ -21,18 +21,14 @@ class App extends Component {
   }
   // Passed as prop for ChatBar to change username 
   changeUserName(name) {
-    this.setState({
-      currentUser: name
-    })
+    this.setState({ currentUser: name })
   }
   
   // Adds a new message
   addNewMessage(message) {
     const oldMessages = this.state.messages;
     const newMessage = [...oldMessages, message];
-    this.setState({ 
-      messages: newMessage
-    });
+    this.setState({ messages: newMessage });
   }
 
   // Sets content for currently typing user
