@@ -9,6 +9,9 @@ const checkIfLink = (content) => {
   return false;
 }
 
+// Message Component, writes the messages received from the websocket server. 
+// It will try to render an img if the message content is an url that ends in png, jpg, jpeg, gif, or svg.
+// Messages and notifications are filtered and rendered.
 const Message = (props) => {
   const {message} = props;
   let link = checkIfLink(message.content);

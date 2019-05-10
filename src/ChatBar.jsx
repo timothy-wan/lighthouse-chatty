@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 
+// ChatBar component that provides input fields for username and message. Has multiple listeners for various user inputs
 class ChatBar extends Component {
   constructor(props) {
     super(props);
@@ -8,9 +9,11 @@ class ChatBar extends Component {
       content: ''
     }
   }
-  
+
   render() {
     const {user, sendMessage, changeUserName, colour, typing} = this.props;
+    
+    // Changes username to input field value when user hits enter
     const changeName = event => {
       if(event.key === 'Enter' && event.target.value !== user) {
         let newMessage = {
@@ -21,11 +24,15 @@ class ChatBar extends Component {
         sendMessage(newMessage);
       }
     }
+    
+    // Change controlled input value for message field
     const onInput = event => {
       this.setState({
         content: event.target.value
       })
     }
+    
+    // Creates and send a new message to websocket server 
     const createMessage = event => {
       if(event.key === 'Enter') {
         let newMessage = {
@@ -38,6 +45,8 @@ class ChatBar extends Component {
         this.setState({content: ''});
       }
     }
+
+    // Send message to server when user is typing
     const userTyping = event => {
       if(event) {
         let newMessage = {

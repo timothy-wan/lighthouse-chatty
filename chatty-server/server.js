@@ -31,6 +31,15 @@ wss.broadcast = message => {
     }
   })
 }
+
+// Broadcast a message to everyone but the sender
+const broadcastToOthers = (message, ws) => {
+  wss.clients.forEach(client => {
+    if(ws !== client && client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(message));
+    }
+  })
+}
 // Send current number of users to all clients
 const sendCurrentUsers = () => {
   let content = '';
@@ -45,6 +54,7 @@ const sendCurrentUsers = () => {
   }
   wss.broadcast(newMessage);
 }
+
 // Sends a random css colour code the client should use
 const sendUserColour = ws => {
   let random = getRandomInt(5);
@@ -54,27 +64,29 @@ const sendUserColour = ws => {
   }
   ws.send(JSON.stringify(newMessage));
 }
-// Broadcasts new message to all clients
-const broadcastNewMessage = (message, type) => {
+
+// Formats new message and passes to cb function to use
+const broadcastNewMessage = (message, type, cb, ws) => {
   let newMessage = {
     ...message,
     id: uuidv1(),
     type
   }
-  wss.broadcast(newMessage)
+  cb(newMessage, ws);
 }
 
+
 // Checks the type of message received and broadcasts the message to all open clients
-const handleNewMessage = message => {
+const handleNewMessage = (message, ws) => {
   switch(message.type) {
     case 'postMessage':
-      broadcastNewMessage(message, 'incomingMessage');
+      broadcastNewMessage(message, 'incomingMessage', wss.broadcast, ws);
       break;
     case 'postNotification':
-      broadcastNewMessage(message, 'incomingNotification');
+      broadcastNewMessage(message, 'incomingNotification', wss.broadcast, ws);
       break;
     case 'currentlyTyping':
-      broadcastNewMessage(message, 'currentlyTyping');
+      broadcastNewMessage(message, 'currentlyTyping', broadcastToOthers, ws);
       break;
     default:
       console.error('Unknown message type received!');
@@ -82,8 +94,7 @@ const handleNewMessage = message => {
 }
 
 // Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
+// When a client connects they are assigned a socket, represented by the ws parameter in the callback.
 // Assigns a colour for client upon connection and updates them on the current client count
 wss.on('connection', ws => {
   sendUserColour(ws);
@@ -91,7 +102,7 @@ wss.on('connection', ws => {
   // When a client sends a message, will parse the data and broadcast new message to all clients
   ws.on('message', data => {
     const receivedData = JSON.parse(data);
-    handleNewMessage(receivedData);
+    handleNewMessage(receivedData, ws);
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.

@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 
+// Navbar Component that shows the current user count
 const Navbar = (props) => {
   return (
     <nav className="navbar">

@@ -19,11 +19,14 @@ class App extends Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.socket = new WebSocket('ws://192.168.88.45:3001', 'procotol');
   }
+  // Passed as prop for ChatBar to change username 
   changeUserName(name) {
     this.setState({
       currentUser: name
     })
   }
+  
+  // Adds a new message
   addNewMessage(message) {
     const oldMessages = this.state.messages;
     const newMessage = [...oldMessages, message];
@@ -31,12 +34,16 @@ class App extends Component {
       messages: newMessage
     });
   }
+
+  // Sets content for currently typing user
   addNewTyping(message) {
     this.setState({ 
       isTyping: true,
       typing: message.content
     });
   }
+  
+  // Passed down as prop for ChatBar to send messages to websocket server
   sendMessage(message) {
     if(this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(JSON.stringify(message));
@@ -81,6 +88,7 @@ class App extends Component {
     }
   }
 
+  // Auto scrolls when message list fills
   componentDidUpdate() {
     window.scrollTo(0, document.body.scrollHeight);
   }
