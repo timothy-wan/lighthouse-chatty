@@ -3,6 +3,12 @@ Chatty App
 
 A SPA built with ReactJS that allows users with communicate with each other without having to register for an account.
 
+### Screenshots
+
+!['Conversation'](./screenshots/Home.png)
+!['Notification'](./screenshots/Like.png)
+!["Cat"](./screenshots/Error.png)
+
 ### Usage
 
 Clone the project.
